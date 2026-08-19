@@ -79,7 +79,8 @@ afterEvaluate { project ->
     task androidJavadoc(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
         classpath += files(android.bootClasspath)
-        classpath += configurations.getByName('releaseCompileClasspath')
+        def releaseVariant = android.libraryVariants.find { it.name == 'release' }
+        classpath += releaseVariant.javaCompile.classpath
         if (JavaVersion.current().isJava8Compatible()) {
             options.addStringOption('Xdoclint:none', '-quiet')
         }
