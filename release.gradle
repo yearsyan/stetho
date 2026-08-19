@@ -25,19 +25,19 @@ def configureStethoPom(def pom) {
         name POM_NAME
         artifactId POM_ARTIFACT_ID
         packaging POM_PACKAGING
-        description 'Stetho Debugging Platform for Android'
-        url 'https://github.com/facebook/stetho'
+        description 'Neuyan-maintained fork of the Stetho Debugging Platform for Android'
+        url 'https://github.com/yearsyan/stetho'
 
         scm {
-            url 'https://github.com/facebook/stetho.git'
-            connection 'scm:git:https://github.com/facebook/stetho.git'
-            developerConnection 'scm:git:git@github.com:facebook/stetho.git'
+            url 'https://github.com/yearsyan/stetho.git'
+            connection 'scm:git:https://github.com/yearsyan/stetho.git'
+            developerConnection 'scm:git:git@github.com:yearsyan/stetho.git'
         }
 
         licenses {
             license {
                 name 'MIT License'
-                url 'https://github.com/facebook/stetho/blob/master/LICENSE'
+                url 'https://github.com/yearsyan/stetho/blob/main/LICENSE'
                 distribution 'repo'
             }
         }
@@ -46,6 +46,11 @@ def configureStethoPom(def pom) {
             developer {
                 id 'facebook'
                 name 'Facebook'
+            }
+            developer {
+                id 'neuyan'
+                name 'Neuyan'
+                url 'https://neuyan.com'
             }
         }
     }

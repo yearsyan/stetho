@@ -7,7 +7,7 @@ This [Stetho](https://facebook.github.io/stetho) plugin adds a JavaScript consol
 ### Download
 Download [the latest JARs](https://github.com/facebook/stetho/releases/latest) or grab via Gradle:
 ```groovy
-implementation 'com.facebook.stetho:stetho-js-rhino:1.4.2'
+implementation 'com.neuyan:stetho-js-rhino:1.6.1-neuyan.1'
 ```
 or Maven:
 ```xml
@@ -232,4 +232,3 @@ If you want to remove the *tools* package for a more aggressive proguard use:
 -keep class org.mozilla.javascript.xml.** { *; }
 -keep class org.mozilla.javascript.xmlimpl.** { *; }
 ```
-

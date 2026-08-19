@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.6.1-neuyan.1
+_Unreleased_
+
+ * Publish the maintained fork under the `com.neuyan` Maven group while
+   preserving the upstream `com.facebook.stetho.*` Java API.
+ * Include the unreleased upstream `/json/list`, CDP 1.3, DevTools frontend,
+   and Android multi-user compatibility fixes.
+
 ## Version 1.6.0
 _2021-03-17_
 
