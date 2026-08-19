@@ -17,15 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '11'
-
       - uses: android-actions/setup-android@v3
 
       - name: Install Android SDK 30
         run: sdkmanager 'platforms;android-30' 'build-tools;30.0.3'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
 
       - name: Build maintained artifacts
         run: ./gradlew --no-daemon :stetho:assembleRelease :stetho-okhttp3:assembleRelease
