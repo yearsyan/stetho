@@ -11,8 +11,8 @@ jobs:
   android:
     runs-on: ubuntu-latest
     env:
-      GRADLE_USER_HOME: ${{ runner.temp }}/gradle
-      GRADLE_OPTS: -Duser.home=${{ runner.temp }}/stetho-home
+      GRADLE_USER_HOME: /tmp/stetho-gradle
+      GRADLE_OPTS: -Duser.home=/tmp/stetho-home
 
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
       - name: Verify Maven coordinates and dependencies
         shell: bash
         run: |
-          repository="${RUNNER_TEMP}/stetho-home/.m2/repository"
+          repository="/tmp/stetho-home/.m2/repository"
           core_pom="${repository}/com/neuyan/stetho/1.6.1-neuyan.1/stetho-1.6.1-neuyan.1.pom"
           okhttp_pom="${repository}/com/neuyan/stetho-okhttp3/1.6.1-neuyan.1/stetho-okhttp3-1.6.1-neuyan.1.pom"
 
