@@ -1,0 +1,60 @@
+name: Publish Maven Central
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version matching VERSION_NAME in gradle.properties
+        required: true
+        default: 1.6.1-rc2
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-maven-central
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      GRADLE_USER_HOME: /tmp/stetho-gradle
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: android-actions/setup-android@v4
+
+      - name: Install Android SDK 30
+        run: sdkmanager 'platforms;android-30' 'build-tools;30.0.3'
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Verify requested version
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          configured_version="$(sed -n 's/^VERSION_NAME=//p' gradle.properties)"
+          test "${REQUESTED_VERSION}" = "${configured_version}"
+
+      - name: Generate Maven artifacts
+        run: |
+          ./gradlew --no-daemon \
+            :stetho:installArchives \
+            :stetho-urlconnection:installArchives \
+            :stetho-okhttp3:installArchives \
+            :stetho-js-rhino:installArchives \
+            :stetho-timber:installArchives
+
+      - name: Sign and publish Central Portal bundle
+        env:
+          SONATYPE_AUTH_TOKEN: ${{ secrets.SONATYPE_AUTH_TOKEN }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
+        run: bash scripts/publish-central.sh

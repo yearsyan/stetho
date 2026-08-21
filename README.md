@@ -1,4 +1,10 @@
-# Stetho [![Build Status](https://travis-ci.org/facebook/stetho.svg?branch=master)](https://travis-ci.org/facebook/stetho)
+# Stetho (Neuyan fork)
+
+This fork preserves Stetho's public `com.facebook.stetho.*` Java API while
+publishing artifacts under the `io.github.yearsyan` Maven group. It is based on the
+final upstream `main` branch and therefore includes the unreleased Chrome
+DevTools discovery and protocol compatibility fixes. The original project is
+available at [facebook/stetho](https://github.com/facebook/stetho).
 
 [Stetho](https://facebook.github.io/stetho) is a sophisticated debug bridge for Android applications. When enabled,
 developers have access to the Chrome Developer Tools feature natively part of
@@ -13,35 +19,46 @@ begin.
 ## Set-up
 
 ### Download
-Download [the latest JARs](https://github.com/facebook/stetho/releases/latest) or grab via Gradle:
+Artifacts built from this fork use the following Gradle coordinates:
 ```groovy
-implementation 'com.facebook.stetho:stetho:1.6.0'
+implementation 'io.github.yearsyan:stetho:1.6.1-rc2'
 ```
 or Maven:
 ```xml
 <dependency>
-  <groupId>com.facebook.stetho</groupId>
+  <groupId>io.github.yearsyan</groupId>
   <artifactId>stetho</artifactId>
-  <version>1.6.0</version>
+  <version>1.6.1-rc2</version>
 </dependency>
 ```
 
 Only the main `stetho` dependency is strictly required; however, you may also wish to use one of the network helpers:
 
 ```groovy
-implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
+implementation 'io.github.yearsyan:stetho-okhttp3:1.6.1-rc2'
 ```
 or:
 ```groovy
-implementation 'com.facebook.stetho:stetho-urlconnection:1.6.0'
+implementation 'io.github.yearsyan:stetho-urlconnection:1.6.1-rc2'
 ```
 
 You can also enable a JavaScript console with:
 
 ```groovy
-implementation 'com.facebook.stetho:stetho-js-rhino:1.6.0'
+implementation 'io.github.yearsyan:stetho-js-rhino:1.6.1-rc2'
 ```
 For more details on how to customize the JavaScript runtime see [stetho-js-rhino](stetho-js-rhino/).
+
+### Publishing this fork
+
+The `Publish Maven Central` GitHub Actions workflow builds, signs, and uploads
+the five maintained modules through the Sonatype Central Portal. The legacy
+OkHttp 2 `stetho-okhttp` module is deliberately excluded. The workflow is
+manually dispatched from `main` and requires these repository secrets:
+
+- `SONATYPE_AUTH_TOKEN`
+- `GPG_PRIVATE_KEY`
+- `GPG_PASSWORD`
 
 ### Putting it together
 Integrating with Stetho is intended to be seamless and straightforward for
@@ -86,7 +103,8 @@ new OkHttpClient.Builder()
     .build()
 ```
 
-Note that okhttp 2.x will work as well, but with slightly different syntax and you must use the `stetho-okhttp` artifact (not `stetho-okhttp3`).
+The legacy OkHttp 2 `stetho-okhttp` module is not published for the
+`1.6.1-rc2` release. Use `stetho-okhttp3` with current OkHttp versions.
 
 As interceptors can modify the request and response, add the Stetho interceptor after all others to get an accurate view of the network traffic.
 

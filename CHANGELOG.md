@@ -1,6 +1,25 @@
 Change Log
 ==========
 
+## Version 1.6.1-rc2
+_2026-08-21_
+
+ * Publish the maintained fork from a consolidated downstream patch set.
+
+## Version 1.6.1-relaunch
+_2026-08-20_
+
+ * Republish the maintained fork as five Maven artifacts, deliberately
+   excluding the deprecated OkHttp 2 `stetho-okhttp` module.
+
+## Version 1.6.1-neuyan.1
+_2026-08-20_
+
+ * Publish the maintained fork under the `io.github.yearsyan` Maven group while
+   preserving the upstream `com.facebook.stetho.*` Java API.
+ * Include the unreleased upstream `/json/list`, CDP 1.3, DevTools frontend,
+   and Android multi-user compatibility fixes.
+
 ## Version 1.6.0
 _2021-03-17_
 

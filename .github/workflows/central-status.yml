@@ -1,0 +1,57 @@
+name: Check Maven Central Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: Central Portal deployment UUID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wait for terminal deployment state
+        env:
+          DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          SONATYPE_AUTH_TOKEN: ${{ secrets.SONATYPE_AUTH_TOKEN }}
+        shell: bash
+        run: |
+          if [[ ! "${DEPLOYMENT_ID}" =~ ^[0-9a-fA-F-]{36}$ ]]; then
+            echo "Invalid deployment ID" >&2
+            exit 1
+          fi
+
+          for attempt in $(seq 1 40); do
+            response="$(curl \
+              --fail \
+              --silent \
+              --show-error \
+              --request POST \
+              --header "Authorization: Bearer ${SONATYPE_AUTH_TOKEN}" \
+              "https://central.sonatype.com/api/v1/publisher/status?id=${DEPLOYMENT_ID}")"
+            state="$(jq -r '.deploymentState // "UNKNOWN"' <<<"${response}")"
+            echo "Central deployment state: ${state}"
+
+            case "${state}" in
+              PUBLISHED)
+                jq . <<<"${response}"
+                exit 0
+                ;;
+              FAILED)
+                jq . <<<"${response}"
+                exit 1
+                ;;
+            esac
+
+            sleep 15
+          done
+
+          echo "Timed out waiting for a terminal Central deployment state" >&2
+          jq . <<<"${response}"
+          exit 1
